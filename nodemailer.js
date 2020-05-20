@@ -24,9 +24,9 @@ async function sendmail(mail) {
 
     // 发送带有定义的传输对象的邮件
     let info = await transporter.sendMail({
-        from: '"冰球" <yuchuang@xs.wbu.edu.cn>', // 发送人邮箱
+        from: '"桌面冰球" <yuchuang@xs.wbu.edu.cn>', // 发送人邮箱
         to: mail, // 接受邮箱
-        subject: "冰球账号注册验证码", // 邮件主题
+        subject: "桌面冰球账号注册验证码", // 邮件主题
         text: "您好，您的验证码为（" + ran + "）, 10分钟内输入有效。", // 邮件文字内容
     });
 
