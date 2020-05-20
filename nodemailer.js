@@ -1,38 +1,40 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
-// async..await is not allowed in global scope, must use a wrapper
-async function main() {
-    // Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
+async function sendmail(mail) {
     let testAccount = await nodemailer.createTestAccount();
 
-    // create reusable transporter object using the default SMTP transport
+    //随机生成6位验证码
+    var ran = '';
+    var str = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    for (var i = 0; i < 6; i++) {
+        ran = ran + str[Math.floor(Math.random() * 10)]
+    }
+
+    // 使用默认的SMTP传输创建可重用的传输器对象
     let transporter = nodemailer.createTransport({
-        host: "smtp.exmail.qq.com",
-        port: 465,
+        host: "smtp.exmail.qq.com",  //腾讯企业邮箱SMTP服务器
+        port: 465,   //端口号
         secure: true, // true for 465, false for other ports
         auth: {
-            user: 'yuchuang@xs.wbu.edu.cn', // generated ethereal user
-            pass: 'jzdKGEsZp7MBzEFn', // generated ethereal password
+            user: 'yuchuang@xs.wbu.edu.cn', // 邮箱
+            pass: 'jzdKGEsZp7MBzEFn', // 授权码
         },
     });
 
-    // send mail with defined transport object
+    // 发送带有定义的传输对象的邮件
     let info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <yuchuang@xs.wbu.edu.cn>', // sender address
-        to: "1669244371@qq.com", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        from: '"冰球" <yuchuang@xs.wbu.edu.cn>', // 发送人邮箱
+        to: mail, // 接受邮箱
+        subject: "冰球账号注册验证码", // 邮件主题
+        text: "您好，您的验证码为（" + ran + "）, 10分钟内输入有效。", // 邮件文字内容
     });
 
     console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-    // Preview only available when sending through an Ethereal account
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+    return ran;
 }
 
-main().catch(console.error);
+sendmail().catch(console.error);
