@@ -27,52 +27,31 @@ function close(){
     });
 }
 
-function executeselect(selectsql){
-    var results;
+function executeSelect(selectsql, resultfun){
     connection.query(selectsql, function(err,result) {
         if (err) {
             console.log('查询失败');
         } else {
             console.log('查询成功');
-            results = JSON.stringify(result);
-            console.log(results);
+            resultfun(result);
         }
     })
-    console.log(results);
-    return results;
 }
 
-function executeinsert(insertsql, insertsql_Params){
-    var myresults = "";
-    connection.query(insertsql,insertsql_Params,function(err,result){
-        if(err){
-            console.log('插入失败' + err);
-            return;
+function executeUpdate(updateSql, undateSql_Params, Updatefun){
+    connection.query(updateSql, undateSql_Params,function(err,result) {
+        if (err) {
+            console.log('更新失败');
+        } else {
+            console.log('更新成功');
+            Updatefun(result.affectedRows);
         }
-        console.log('插入成功');
-        myresults = JSON.stringify(result);
     })
-    return myresults;
 }
-
-function executeupdate(updateSql, undateSql_Params){
-    var myresults;
-    connection.query(updateSql,undateSql_Params,function(err,result){
-        if(err){
-            console.log('更新失败' + err);
-            return;
-        }
-        console.log('更新成功');
-        myresults = JSON.stringify(result);
-    })
-    return myresults;
-}
-
-
 
 module.exports = {
     connect,
-    executeselect,
-    executeinsert,
+    executeSelect,
+    executeUpdate,
     close
 }
