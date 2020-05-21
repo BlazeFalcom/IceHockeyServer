@@ -22,8 +22,8 @@ function close(){
     });
 }
 
-function executeSelect(selectsql, resultfun){
-    connection.query(selectsql, function(err,result) {
+function executeSelect(selectsql, selectSql_Params, resultfun){
+    connection.query(selectsql, selectSql_Params, function(err,result) {
         if (err) {
             console.log('查询失败' + err);
         } else {

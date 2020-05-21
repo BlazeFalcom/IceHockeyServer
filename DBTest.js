@@ -1,7 +1,10 @@
 var db = require('./Util/DBUtil');
-var config = require('./DBconfig')
+var config = require('./DBconfig');
+var user = require('./Model/User');
+var dao = require('./Dao/UserDao');
 db.connect();
+var a = new user.User("1", "2", "3", "4", "5");
 
-db.executeUpdate("update account set pwd = ? where c_id = ?", ['654321', '100005'], function(result){
-    console.log(result);
-})
+dao.Login(db, a, function (length) {
+    console.log(length);
+});
