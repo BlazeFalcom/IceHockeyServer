@@ -1,11 +1,6 @@
 var mysql = require('mysql')
-var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'lyf1999102',
-    port     : '3306',
-    database : 'bank'
-});
+var config = require('../DBconfig')
+var connection = mysql.createConnection(config);
 
 function connect() {
     connection.connect(function(err){
@@ -30,7 +25,7 @@ function close(){
 function executeSelect(selectsql, resultfun){
     connection.query(selectsql, function(err,result) {
         if (err) {
-            console.log('查询失败');
+            console.log('查询失败' + err);
         } else {
             console.log('查询成功');
             resultfun(result);
@@ -41,7 +36,7 @@ function executeSelect(selectsql, resultfun){
 function executeUpdate(updateSql, undateSql_Params, Updatefun){
     connection.query(updateSql, undateSql_Params,function(err,result) {
         if (err) {
-            console.log('更新失败');
+            console.log('更新失败' + err);
         } else {
             console.log('更新成功');
             Updatefun(result.affectedRows);

@@ -1,7 +1,7 @@
 var ws = require('ws');
 var server=new ws.Server({
     host: "192.168.1.6",
-    port: 12248,
+    port: 12000,
 });
 //初始位置
 var initLocation=["X=500.000 Y=0.000 Z=150.000", "X=-500.000 Y=0.000 Z=150.000"];
