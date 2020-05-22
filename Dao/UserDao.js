@@ -6,6 +6,9 @@ function Login(db, user, resultfun){
     });
 }
 
+function Register(db, user, resultfun) {
+    var sql = "insert into user "
+}
 module.exports = {
     Login
 }
