@@ -23,6 +23,7 @@ server.on('connection', function (conn) {
         UserSerivce.Login(user, function(success ,Loginresult) {
             if(success) {
                 conn.send("登录成功");
+                user = new UserClass.User( Loginresult.email,"", "", null);
                 BanRecordSerivce.SelectRecordByUser(user, function (success, Banresult){
                     if(success) {
                         conn.send("账号已被冻结");
