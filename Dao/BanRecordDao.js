@@ -1,6 +1,6 @@
-function Add(db, gameRecord, resultfun){
-    var sql = "insert into game_record(my_email,rival_email,winner,my_score,rival_score,time) values(?,?,?,?,?,?)";
-    var Params = [gameRecord.my_email, gameRecord.rival_email, gameRecord.winner, gameRecord.my_score, gameRecord.rival_score, gameRecord.time];
+function Add(db, banRecord, resultfun){
+    var sql = "insert into game_record(email, start, end) values(?,?,?)";
+    var Params = [banRecord.email, banRecord.start, banRecord.end];
     db.executeUpdate(sql, Params, function(result){
         resultfun(result);
     });
@@ -20,7 +20,6 @@ function SelectByUser(db, user) {
         resultfun(result);
     });
 }
-
 
 module.exports = {
     Add,

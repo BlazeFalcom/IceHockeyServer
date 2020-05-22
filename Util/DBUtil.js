@@ -1,23 +1,23 @@
 var mysql = require('mysql')
 var config = require('../DBconfig')
 var connection;
-
 function connect() {
     connection = mysql.createConnection(config);
     connection.connect(function(err){
-        if(err){
-            console.log("连接失败");
-        }else{
-            console.log("连接成功");
-        }
+            if(err){
+                console.log("连接失败");
+            }else{
+                console.log("连接成功");
+            }
     });
+
 }
 
 function close(){
-    connection.end(function(err){
-        if(err){
+    connection.end(function (err) {
+        if (err) {
             console.log("连接关闭失败");
-        }else{
+        } else {
             console.log("连接关闭成功");
         }
     });
