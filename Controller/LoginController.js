@@ -12,8 +12,16 @@ var server=new ws.Server({
 server.on('connection', function (conn) {
 
     conn.on('message', function (message) {
-        var userjson = JSON.parse(message);
+        /**
+         * 打包后网页发送过来的为buffer对象，需要先转化为字符串。
+         * 然后因为网页发送的属性名和在UE4中测试时不同，比如使用UE4测试时是username，打包后网页发送的是UserName，所以需要全部转换为小写（不是必要，但是有补全比较舒服）
+         * 最后再转为JSON对象即可取属性值了
+         */
+        var userjson = JSON.parse(message.toString('utf-8').toLocaleLowerCase());
         var regex = require('../Util/Regex');
+        console.log(userjson);
+        console.log(userjson.username);
+
         var user;
         if(regex.mail.test(userjson.username)){
             user = new UserClass.User(userjson.username, userjson.password, "", null);
