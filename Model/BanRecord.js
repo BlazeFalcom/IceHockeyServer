@@ -1,6 +1,7 @@
 class BanRecord{
-    constructor(uid, start, end) {
-        this.uid = uid;
+    constructor(bid, email, start, end) {
+        this.bid = bid;
+        this.email = email;
         this.start = start;
         this.end = end;
     }
