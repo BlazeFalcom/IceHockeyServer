@@ -20,6 +20,7 @@ BanRecordSerivce.SelectRecordByUser(user, function (success,result) {
     if(success) {
         console.log("账号已被冻结");
     } else {
+        console.log(result.email);
         console.log("账号没有冻结");
     }
 })

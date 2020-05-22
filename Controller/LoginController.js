@@ -20,14 +20,14 @@ server.on('connection', function (conn) {
         } else {
             user = new UserClass.User("", userjson.password, userjson.username, null);
         }
-        UserSerivce.Login(user, function(success ,result) {
+        UserSerivce.Login(user, function(success ,Loginresult) {
             if(success) {
                 conn.send("登录成功");
-                BanRecordSerivce.SelectRecordByUser(user, function (success, result){
+                BanRecordSerivce.SelectRecordByUser(user, function (success, Banresult){
                     if(success) {
                         conn.send("账号已被冻结");
                     } else {
-                        var loginRecord = new LoginRecordClass.LoginRecord(null, result.email);
+                        var loginRecord = new LoginRecordClass.LoginRecord(null, Loginresult.email);
                         LoginRecordSerivce.AddRecord(loginRecord,function(result){
                             if(result > 0) {
                                 console.log("登录记录成功");
