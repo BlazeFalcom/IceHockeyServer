@@ -13,7 +13,7 @@ function SelectAll(db, resultfun){
     })
 }
 
-function SelectByUser(db, user) {
+function SelectByUser(db, loginRecord) {
     var sql = "select * from login_record where email=?";
     var Params = [user.email];
     db.executeSelect(sql, [], function(result){
