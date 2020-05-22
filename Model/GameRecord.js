@@ -1,10 +1,10 @@
 class GameRecord{
-    constructor(gid, our, rival, winner, uscore, rival_score, time) {
+    constructor(gid, my_email, rival_email, winner, my_score, rival_score, time) {
         this.gid = gid;
-        this.our = our;
-        this.rival = rival;
+        this.my_email = my_email;
+        this.rival_email = rival_email;
         this.winner = winner;
-        this.uscore = uscore;
+        this.my_score = my_score;
         this.rival_score = rival_score;
         this.time = time;
     }
