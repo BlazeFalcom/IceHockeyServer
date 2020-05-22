@@ -12,8 +12,8 @@ server.on('connection', function (conn) {
 
     conn.on('message', function (message) {
         var userjson = JSON.parse(message);
-        var user = UserClass.User(userjson.username, userjson.password, null, null);
-        var loginRecord = LoginRecordClass.LoginRecord(null, userjson.username);
+        var user = new UserClass.User(userjson.username, userjson.password, null, null);
+        var loginRecord = new LoginRecordClass.LoginRecord(null, userjson.username);
         UserSerivce.Login(user, function(result) {
             if(result) {
                 conn.send("登录成功");

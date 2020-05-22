@@ -1,9 +1,9 @@
 var db = require('../Util/DBUtil');
 var LoginRecordDao = require('../Dao/LoginRecordDao');
-function AddRecord(user, resultfun) {
+function AddRecord(loginRecord, resultfun) {
     db.connect();
     LoginRecordDao.Add(db, loginRecord, function (result){
-        db.close();
+
         resultfun(result);
     })
 }
