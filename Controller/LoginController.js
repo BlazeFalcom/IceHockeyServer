@@ -12,6 +12,8 @@ server.on('connection', function (conn) {
 
     conn.on('message', function (message) {
         var userjson = JSON.parse(message);
+        var reg=/^\s*\w+@\w+(\.\w+)+\s*$/;
+        console.log("匹配结果:"+reg.test(userjson.username));
         var user = new UserClass.User(userjson.username, userjson.password, null, null);
         var loginRecord = new LoginRecordClass.LoginRecord(null, userjson.username);
         UserSerivce.Login(user, function(result) {
