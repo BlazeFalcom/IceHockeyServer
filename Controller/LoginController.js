@@ -12,13 +12,16 @@ server.on('connection', function (conn) {
 
     conn.on('message', function (message) {
         var userjson = JSON.parse(message);
-        var reg=/^\s*\w+@\w+(\.\w+)+\s*$/;
-        console.log("匹配结果:"+reg.test(userjson.username));
-        var user = new UserClass.User(userjson.username, userjson.password, null, null);
-        var loginRecord = new LoginRecordClass.LoginRecord(null, userjson.username);
-        UserSerivce.Login(user, function(result) {
-            if(result) {
+        var regex = require('../Util/Regex');
+        if(regex.mail.test(userjson.username)){
+            var user = new UserClass.User(userjson.username, userjson.password, "", null);
+        } else {
+            var user = new UserClass.User("", userjson.password, userjson.username, null);
+        }
+        UserSerivce.Login(user, function(success ,result) {
+            if(success) {
                 conn.send("登录成功");
+                var loginRecord = new LoginRecordClass.LoginRecord(null, result.email);
                 LoginRecordSerivce.AddRecord(loginRecord,function(result){
                     if(result > 0) {
                         console.log("登录记录成功");

@@ -4,12 +4,15 @@ var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
 var UserSerivce = require('../Service/UserSerivce');
 var async = require('async');
 var db = require('../Util/DBUtil')
+var regex = require('../Util/Regex');
 
-var user = new UserClass.User("1223", "23", null, null);
+var user = new UserClass.User("1223", "23", "", null);
 console.log(user);
 
-UserSerivce.Login(user, function(result) {
-    console.log(result);
+UserSerivce.Login(user, function(success ,result) {
+    if (success) {
+        console.log(result);
+    }
 });
 
 
