@@ -22,12 +22,12 @@ server.on('connection', function (conn) {
         }
         UserSerivce.Login(user, function(success ,Loginresult) {
             if(success) {
-                conn.send("登录成功");
                 user = new UserClass.User( Loginresult.email,"", "", null);
                 BanRecordSerivce.SelectRecordByUser(user, function (success, Banresult){
                     if(success) {
                         conn.send("账号已被冻结");
                     } else {
+                        conn.send("登录成功");
                         var loginRecord = new LoginRecordClass.LoginRecord(null, Loginresult.email);
                         LoginRecordSerivce.AddRecord(loginRecord,function(result){
                             if(result > 0) {

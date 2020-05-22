@@ -17,7 +17,7 @@ function SelectRecords(resultfun) {
 function SelectRecordByUser(user, resultfun){
     db.connect();
     BanRecordDao.SelectByUser(db, user,function (data){
-        if (data.length == 1) {
+        if (data.length>0) {
             resultfun(true,data[0]);
         } else {
             resultfun(false,data[0]);
