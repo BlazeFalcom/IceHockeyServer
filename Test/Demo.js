@@ -2,6 +2,7 @@ var UserClass = require('../Model/User');
 var LoginRecordClass = require('../Model/LoginRecord');
 var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
 var UserSerivce = require('../Service/UserSerivce');
+var BanRecordSerivce = require('../Service/BanRecordService');
 var async = require('async');
 var db = require('../Util/DBUtil')
 var regex = require('../Util/Regex');
@@ -14,6 +15,14 @@ UserSerivce.Login(user, function(success ,result) {
         console.log(result);
     }
 });
+
+BanRecordSerivce.SelectRecordByUser(user, function (success,result) {
+    if(success) {
+        console.log("账号已被冻结");
+    } else {
+        console.log("账号没有冻结");
+    }
+})
 
 
 

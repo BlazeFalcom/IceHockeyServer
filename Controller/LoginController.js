@@ -3,6 +3,7 @@ var UserClass = require('../Model/User');
 var LoginRecordClass = require('../Model/LoginRecord');
 var UserSerivce = require('../Service/UserSerivce');
 var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
+var BanRecordSerivce = require('../Service/BanRecordService');
 var server=new ws.Server({
     host: "192.168.1.6",
     port: "12001",
@@ -13,20 +14,27 @@ server.on('connection', function (conn) {
     conn.on('message', function (message) {
         var userjson = JSON.parse(message);
         var regex = require('../Util/Regex');
+        var user;
         if(regex.mail.test(userjson.username)){
-            var user = new UserClass.User(userjson.username, userjson.password, "", null);
+            user = new UserClass.User(userjson.username, userjson.password, "", null);
         } else {
-            var user = new UserClass.User("", userjson.password, userjson.username, null);
+            user = new UserClass.User("", userjson.password, userjson.username, null);
         }
         UserSerivce.Login(user, function(success ,result) {
             if(success) {
                 conn.send("登录成功");
-                var loginRecord = new LoginRecordClass.LoginRecord(null, result.email);
-                LoginRecordSerivce.AddRecord(loginRecord,function(result){
-                    if(result > 0) {
-                        console.log("登录记录成功");
+                BanRecordSerivce.SelectRecordByUser(user, function (success, result){
+                    if(success) {
+                        conn.send("账号已被冻结");
                     } else {
-                        console.log("登录记录失败");
+                        var loginRecord = new LoginRecordClass.LoginRecord(null, result.email);
+                        LoginRecordSerivce.AddRecord(loginRecord,function(result){
+                            if(result > 0) {
+                                console.log("登录记录成功");
+                            } else {
+                                console.log("登录记录失败");
+                            }
+                        });
                     }
                 });
             } else {
