@@ -1,5 +1,5 @@
 function Add(db, banRecord, resultfun){
-    var sql = "insert into game_record(email, start, end) values(?,?,?)";
+    var sql = "insert into ban_record(email, start, end) values(?,?,?)";
     var Params = [banRecord.email, banRecord.start, banRecord.end];
     db.executeUpdate(sql, Params, function(result){
         resultfun(result);
@@ -7,16 +7,16 @@ function Add(db, banRecord, resultfun){
 }
 
 function SelectAll(db, resultfun){
-    var sql = "select * from game_record";
+    var sql = "select * from ban_record";
     db.executeSelect(sql, [], function(result){
         resultfun(result);
     })
 }
 
-function SelectByUser(db, user) {
-    var sql = "select * from game_record where my_email=?";
+function SelectByUser(db, user, resultfun) {
+    var sql = "select * from ban_record where email=?";
     var Params = [user.email];
-    db.executeSelect(sql, [], function(result){
+    db.executeSelect(sql, Params, function(result){
         resultfun(result);
     });
 }
