@@ -1,10 +1,20 @@
-var http = require('http');
-var url = require('url');
-var util = require('util');
-var user = require('./Model/User');
+var UserClass = require('../Model/User');
+var LoginRecordClass = require('../Model/LoginRecord');
+var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
+var UserSerivce = require('../Service/UserSerivce');
 var async = require('async');
-var db = require('./Util/DBUtil')
-db.connect();
+var db = require('../Util/DBUtil')
+
+var user = new UserClass.User("1223", "23", null, null);
+console.log(user);
+
+UserSerivce.Login(user, function(result) {
+    console.log(result);
+});
+
+
+
+
 // async.parallel([
 //     function(callback) {
 //         db.executeSelect('select * from account', [], function(result){
@@ -21,9 +31,7 @@ db.connect();
 // ],function(err, result){
 //     console.log(result[0]);
 // });
-http.createServer(function(req, res){
-    var params = url.parse(req.url, true).query;
-    console.log(params.name);
-    res.write("123");
-    res.end();
-}).listen(3000);
+
+
+
+

@@ -34,6 +34,7 @@ server.on('connection', function (conn) {
     //断开连接时调用
     conn.on("close", function() {
         console.log("client close");
+
     });
 
     // 发生错误时调用

@@ -1,5 +1,5 @@
 "use strict";
-const nodemailer = require("nodemailer");
+const nodemailer = require("Util/nodemailer");
 
 async function sendmail(mail) {
     let testAccount = await nodemailer.createTestAccount();
