@@ -1,8 +1,9 @@
 var mysql = require('mysql')
 var config = require('../DBconfig')
-var connection = mysql.createConnection(config);
+var connection;
 
 function connect() {
+    connection = mysql.createConnection(config);
     connection.connect(function(err){
         if(err){
             console.log("连接失败");
