@@ -1,23 +1,21 @@
-var http = require('http');
-var querystring = require('querystring');
+var ws = require('ws');
+var server=new ws.Server({
+    host: "192.168.1.6",
+    port: "12001",
+});
 
-http.createServer(function(req, res){
-    var result = "";
+server.on('connection', function (conn) {
 
-    console.log(req.url);
-
-    req.on('data', function (chunk){
-       result += chunk;
-       console.log("chunk:", chunk);
+    conn.on('message', function (message) {
+        console.log(message);
+    });
+    //断开连接时调用
+    conn.on("close", function() {
+        console.log("client close");
     });
 
-    req.on('end', function (){
-        result = querystring.parse(result);
-        console.log("result:", result);
-
-        if(result.username && result.password) {
-            res.write(JSON.stringify(result));
-        }
-        res.end();
-    })
-}).listen(3000);
+    // 发生错误时调用
+    conn.on("error", function(err) {
+        console.log("client error", err);
+    });
+});
