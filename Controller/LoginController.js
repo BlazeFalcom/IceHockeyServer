@@ -10,7 +10,7 @@ var server=new ws.Server({
 });
 
 server.on('connection', function (conn) {
-
+    console.log("客户端连接成功")
     conn.on('message', function (message) {
         /**
          * 打包后网页发送过来的为buffer对象，需要先转化为字符串。
@@ -53,12 +53,12 @@ server.on('connection', function (conn) {
     });
     //断开连接时调用
     conn.on("close", function() {
-        console.log("client close");
+        console.log("客户端连接关闭");
 
     });
 
     // 发生错误时调用
     conn.on("error", function(err) {
-        console.log("client error", err);
+        console.log("客户端连接出错", err);
     });
 });

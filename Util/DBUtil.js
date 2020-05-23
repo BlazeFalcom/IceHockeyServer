@@ -5,9 +5,9 @@ function connect() {
     connection = mysql.createConnection(config);
     connection.connect(function(err){
             if(err){
-                console.log("连接失败");
+                console.log("数据库连接失败");
             }else{
-                console.log("连接成功");
+                console.log("数据库连接成功");
             }
     });
 
@@ -16,9 +16,9 @@ function connect() {
 function close(){
     connection.end(function (err) {
         if (err) {
-            console.log("连接关闭失败");
+            console.log("数据库连接关闭失败");
         } else {
-            console.log("连接关闭成功");
+            console.log("数据库连接关闭成功");
         }
     });
 }
@@ -26,9 +26,9 @@ function close(){
 function executeSelect(selectsql, selectSql_Params, resultfun){
     connection.query(selectsql, selectSql_Params, function(err,result) {
         if (err) {
-            console.log('查询失败' + err);
+            console.log('数据库查询失败' + err);
         } else {
-            console.log('查询成功');
+            console.log('数据库查询成功');
             resultfun(result);
         }
     })
@@ -37,9 +37,9 @@ function executeSelect(selectsql, selectSql_Params, resultfun){
 function executeUpdate(updateSql, undateSql_Params, Updatefun){
     connection.query(updateSql, undateSql_Params,function(err,result) {
         if (err) {
-            console.log('更新失败' + err);
+            console.log('数据库更新失败' + err);
         } else {
-            console.log('更新成功');
+            console.log('数据库更新成功');
             Updatefun(result.affectedRows);
         }
     })
