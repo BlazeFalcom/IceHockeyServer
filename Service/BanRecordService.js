@@ -20,7 +20,7 @@ function SelectRecordByUser(user, resultfun){
         if (data.length>0) {
             resultfun(true,data[0]);
         } else {
-            resultfun(false,data[0]);
+            resultfun(false, null);
         }
     });
 }

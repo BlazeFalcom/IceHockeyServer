@@ -7,27 +7,27 @@ var async = require('async');
 var db = require('../Util/DBUtil')
 var regex = require('../Util/Regex');
 
-var user = new UserClass.User("1223", "23", "", null);
-console.log(user);
+var user = new UserClass.User("1222", "23", "24", null);
+// console.log(user);
+//
+// UserSerivce.Login(user, function(success ,result) {
+//     if (success) {
+//         console.log(result);
+//     }
+// });
+//
+// BanRecordSerivce.SelectRecordByUser(user, function (success,result) {
+//     if(success) {
+//         console.log("账号已被冻结");
+//     } else {
+//         console.log(result.email);
+//         console.log("账号没有冻结");
+//     }
+// })
 
-UserSerivce.Login(user, function(success ,result) {
-    if (success) {
-        console.log(result);
-    }
-});
-
-BanRecordSerivce.SelectRecordByUser(user, function (success,result) {
-    if(success) {
-        console.log("账号已被冻结");
-    } else {
-        console.log(result.email);
-        console.log("账号没有冻结");
-    }
+UserSerivce.Register(user, function (success,message) {
+    console.log(message);
 })
-
-
-
-
 // async.parallel([
 //     function(callback) {
 //         db.executeSelect('select * from account', [], function(result){

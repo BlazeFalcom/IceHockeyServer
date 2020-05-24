@@ -11,7 +11,25 @@ function Login(user, resultfun) {
     });
 }
 
+function Register(user, resultfun) {
+    db.connect();
+    UserDao.SelectByName(db, user.name, function (result) {
+        if (result.length == 1) {
+            resultfun(false, "昵称已存在")
+        } else {
+            UserDao.Register(db,user,function(result){
+                if (result == 1) {
+                    resultfun( true,"注册成功");
+                } else {
+                    resultfun(false, "该Email已注册过账号");
+                }
+            });
+        }
+    })
+}
+
 module.exports = {
-    Login
+    Login,
+    Register
 }
 

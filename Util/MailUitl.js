@@ -1,8 +1,8 @@
 "use strict";
-const nodemailer = require("Util/nodemailer");
+const mailUitl = require("Util/MailUitl");
 
 async function sendmail(mail) {
-    let testAccount = await nodemailer.createTestAccount();
+    let testAccount = await mailUitl.createTestAccount();
 
     //随机生成6位验证码
     var ran = '';
@@ -12,7 +12,7 @@ async function sendmail(mail) {
     }
 
     // 使用默认的SMTP传输创建可重用的传输器对象
-    let transporter = nodemailer.createTransport({
+    let transporter = mailUitl.createTransport({
         host: "smtp.exmail.qq.com",  //腾讯企业邮箱SMTP服务器
         port: 465,   //端口号
         secure: true, // true for 465, false for other ports
@@ -32,9 +32,13 @@ async function sendmail(mail) {
 
     console.log("Message sent: %s", info.messageId);
 
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    console.log("Preview URL: %s", mailUitl.getTestMessageUrl(info));
 
     return ran;
 }
 
 sendmail().catch(console.error);
+
+module.exports = {
+    sendmail
+}

@@ -38,6 +38,7 @@ function executeUpdate(updateSql, undateSql_Params, Updatefun){
     connection.query(updateSql, undateSql_Params,function(err,result) {
         if (err) {
             console.log('数据库更新失败' + err);
+            Updatefun(0);
         } else {
             console.log('数据库更新成功');
             Updatefun(result.affectedRows);
