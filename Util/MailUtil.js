@@ -1,6 +1,6 @@
 "use strict";
 const nodemailer = require("nodemailer");
-async function sendmail(mail) {
+async function sendmail(mail, result) {
     let testAccount = await nodemailer.createTestAccount();
 
     //随机生成6位验证码
@@ -9,7 +9,7 @@ async function sendmail(mail) {
     for (var i = 0; i < 6; i++) {
         ran = ran + str[Math.floor(Math.random() * 10)]
     }
-
+    result(ran);
     // 使用默认的SMTP传输创建可重用的传输器对象
     let transporter = nodemailer.createTransport({
         host: "smtp.exmail.qq.com",  //腾讯企业邮箱SMTP服务器
@@ -27,12 +27,13 @@ async function sendmail(mail) {
         to: mail, // 接受邮箱
         subject: "桌面冰球账号注册验证码", // 邮件主题
         text: "您好，您的验证码为（" + ran + "）, 10分钟内输入有效。", // 邮件文字内容
+
     });
-
-
-    return ran;
 }
 
+sendmail("1052369532@qq.com", function (code) {
+    console.log(code);
+})
 module.exports = {
     sendmail
 }

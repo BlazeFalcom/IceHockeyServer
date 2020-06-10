@@ -25,7 +25,7 @@ server.on('connection', function (conn) {
         if (typeof(userjson.email) != "undefined") {
             var email = userjson.email;
             if(regex.mail.test(email)) {
-                ran = MailUtil.sendmail(email);
+                conn.ran = MailUtil.sendmail(email);
                 conn.send("邮件发送成功");
             } else {
                 conn.send("邮件格式不正确");
@@ -34,7 +34,7 @@ server.on('connection', function (conn) {
             if(conn.ran == "") {
                 conn.send("请先获取验证码");
             } else {
-                if (ran == userjson.code) {
+                if (conn.ran == userjson.code) {
                     var user = new UserClass.User(userjson.username, userjson.password, userjson.name, null);
                     UserSerivce.Register(user,function (success, message) {
                         if(success) {

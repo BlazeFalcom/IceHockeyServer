@@ -6,6 +6,7 @@ var BanRecordSerivce = require('../Service/BanRecordService');
 var async = require('async');
 var db = require('../Util/DBUtil')
 var regex = require('../Util/Regex');
+var Mail = require('../Util/MailUtil');
 
 var user = new UserClass.User("1222", "23", "24", null);
 // console.log(user);
@@ -25,9 +26,9 @@ var user = new UserClass.User("1222", "23", "24", null);
 //     }
 // })
 
-UserSerivce.Register(user, function (success,message) {
-    console.log(message);
-})
+// UserSerivce.Register(user, function (success,message) {
+//     console.log(message);
+// })
 // async.parallel([
 //     function(callback) {
 //         db.executeSelect('select * from account', [], function(result){
@@ -44,7 +45,5 @@ UserSerivce.Register(user, function (success,message) {
 // ],function(err, result){
 //     console.log(result[0]);
 // });
-
-
 
 
