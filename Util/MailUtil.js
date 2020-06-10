@@ -31,9 +31,6 @@ async function sendmail(mail, result) {
     });
 }
 
-sendmail("1052369532@qq.com", function (code) {
-    console.log(code);
-})
 module.exports = {
     sendmail
 }

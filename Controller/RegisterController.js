@@ -27,6 +27,7 @@ server.on('connection', function (conn) {
             if(regex.mail.test(email)) {
                 MailUtil.sendmail(email, function(code){
                     conn.ran = code;
+                    console.log(conn.ran);
                 });
                 conn.send("邮件发送成功");
             } else {
@@ -36,6 +37,8 @@ server.on('connection', function (conn) {
             if(conn.ran == "") {
                 conn.send("请先获取验证码");
             } else {
+                console.log("1:"+userjson.code);
+                console.log("2:"+conn.ran);
                 if (conn.ran == userjson.code) {
                     var user = new UserClass.User(userjson.username, userjson.password, userjson.name, null);
                     UserSerivce.Register(user,function (success, message) {
