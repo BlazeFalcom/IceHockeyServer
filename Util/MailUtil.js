@@ -1,8 +1,7 @@
 "use strict";
-const mailUitl = require("Util/MailUitl");
-
+const nodemailer = require("nodemailer");
 async function sendmail(mail) {
-    let testAccount = await mailUitl.createTestAccount();
+    let testAccount = await nodemailer.createTestAccount();
 
     //随机生成6位验证码
     var ran = '';
@@ -12,7 +11,7 @@ async function sendmail(mail) {
     }
 
     // 使用默认的SMTP传输创建可重用的传输器对象
-    let transporter = mailUitl.createTransport({
+    let transporter = nodemailer.createTransport({
         host: "smtp.exmail.qq.com",  //腾讯企业邮箱SMTP服务器
         port: 465,   //端口号
         secure: true, // true for 465, false for other ports
@@ -30,14 +29,9 @@ async function sendmail(mail) {
         text: "您好，您的验证码为（" + ran + "）, 10分钟内输入有效。", // 邮件文字内容
     });
 
-    console.log("Message sent: %s", info.messageId);
-
-    console.log("Preview URL: %s", mailUitl.getTestMessageUrl(info));
 
     return ran;
 }
-
-sendmail().catch(console.error);
 
 module.exports = {
     sendmail

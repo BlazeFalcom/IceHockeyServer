@@ -4,7 +4,7 @@ var LoginRecordClass = require('../Model/LoginRecord');
 var UserSerivce = require('../Service/UserSerivce');
 var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
 var BanRecordSerivce = require('../Service/BanRecordService');
-var MailUitl = require('../Util/MailUitl');
+var MailUtil = require('../Util/MailUtil');
 var server=new ws.Server({
     host: "192.168.1.6",
     port: "12002",
@@ -25,7 +25,7 @@ server.on('connection', function (conn) {
         if (typeof(userjson.email) != "undefined") {
             var email = userjson.email;
             if(regex.mail.test(email)) {
-                ran = MailUitl.sendmail(email);
+                ran = MailUtil.sendmail(email);
                 conn.send("邮件发送成功");
             } else {
                 conn.send("邮件格式不正确");
