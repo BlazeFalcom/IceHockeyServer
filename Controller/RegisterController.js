@@ -25,7 +25,9 @@ server.on('connection', function (conn) {
         if (typeof(userjson.email) != "undefined") {
             var email = userjson.email;
             if(regex.mail.test(email)) {
-                conn.ran = MailUtil.sendmail(email);
+                MailUtil.sendmail(email, function(code){
+                    conn.ran = code;
+                });
                 conn.send("邮件发送成功");
             } else {
                 conn.send("邮件格式不正确");
