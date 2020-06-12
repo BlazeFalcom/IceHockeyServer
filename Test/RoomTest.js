@@ -6,11 +6,12 @@ var server=new ws.Server({
 });
 
 var room = [];
-let count = 0;
+let count_coon = 0;
+let count_room = 0;
 
 server.on("connection", function (coon) {
-    count++;
-    conn.id=`${count}`;
+    count_coon++;
+    conn.id=`${count_coon}`;
     conn.roomid = "";
     conn.on('message', function (message){
         var str=message.toString('utf-8').split(",");
@@ -30,16 +31,13 @@ server.on("connection", function (coon) {
                 StartGame(coon.roomid);
         }
     });
-
-
-
 });
 
 
 //创建房间
 function CreateRoom(id, name, usercoon) {
-    room[count] = new RoomClass(id, name, usercoon, null);
-    count++;
+    room[count_room] = new RoomClass(id, name, usercoon, null);
+    count_room++;
 }
 
 //加入房间
@@ -61,7 +59,8 @@ function StartGame() {
     for (var i = 0; i <= room.length; i++){
         if (room[i].id == id) {
             room[i].user1conn.send(12000);
-            room[i].user2conn.send(12000)
+            room[i].user2conn.send(12000);
+            room.splice(i, 1);
         }
     }
 }
