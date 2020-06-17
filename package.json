@@ -15,6 +15,7 @@
     "ws": "^7.3.0"
   },
   "devDependencies": {
-    "nodemailer": "^6.4.8"
+    "nodemailer": "^6.4.8",
+    "shelljs": "^0.8.4"
   }
 }

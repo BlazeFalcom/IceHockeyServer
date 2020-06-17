@@ -28,8 +28,13 @@ function Register(user, resultfun) {
     })
 }
 
+function ShowRank(resultfun) {
+    db.connect();
+    UserDao.ShowRank(db,resultfun);
+}
 module.exports = {
     Login,
-    Register
+    Register,
+    ShowRank
 }
 

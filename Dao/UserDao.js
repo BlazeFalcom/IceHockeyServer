@@ -22,8 +22,17 @@ function SelectByName(db, name, resultfun) {
         resultfun(result);
     });
 }
+
+function ShowRank(db, resultfun){
+    var sql = "select name,point from user order by point desc limit 0,100";
+    db.executeSelect(sql, [], function(result){
+        resultfun(result);
+    });
+}
+
 module.exports = {
     Login,
     Register,
-    SelectByName
+    SelectByName,
+    ShowRank
 }
