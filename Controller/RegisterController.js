@@ -5,12 +5,13 @@ var UserSerivce = require('../Service/UserSerivce');
 var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
 var BanRecordSerivce = require('../Service/BanRecordService');
 var MailUtil = require('../Util/MailUtil');
-var server=new ws.Server({
-    host: "192.168.1.6",
-    port: "12002",
+var config = require('../WebSocketconfig');
+var server = new ws.Server({
+    host: config.host,
+    port: config.register_port
 });
 server.on('connection', function (conn) {
-    console.log("客户端连接成功");
+    console.log(conn._socket.remoteAddress);
     conn.ran = "";
     conn.on('message', function (message) {
         /**
@@ -21,7 +22,6 @@ server.on('connection', function (conn) {
         var userjson = JSON.parse(message.toString('utf-8').toLocaleLowerCase());
         var regex = require('../Util/Regex');
         console.log(userjson);
-        console.log(userjson.username);
         if (typeof(userjson.email) != "undefined") {
             var email = userjson.email;
             if(regex.mail.test(email)) {
@@ -40,7 +40,7 @@ server.on('connection', function (conn) {
                 console.log("1:"+userjson.code);
                 console.log("2:"+conn.ran);
                 if (conn.ran == userjson.code) {
-                    var user = new UserClass.User(userjson.username, userjson.password, userjson.name, null);
+                    var user = new UserClass.User(userjson.username, userjson.password, userjson.name, userjson.sex, conn._socket.remoteAddress);
                     UserSerivce.Register(user,function (success, message) {
                         if(success) {
                             conn.send("注册成功");

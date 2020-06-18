@@ -1,8 +1,9 @@
 class LoginRecord{
-    constructor(lid, email, time) {
+    constructor(lid, email, login_time, logout_time) {
         this.lid = lid;
         this.email = email;
-        this.time = time;
+        this.login_time = login_time;
+        this.logout_time = logout_time;
     }
 }
 

@@ -2,22 +2,47 @@ var db = require('../Util/DBUtil');
 var UserDao = require('../Dao/UserDao');
 function Login(user, resultfun) {
     db.connect();
-    UserDao.Login(db, user, function (result){
+    UserDao.SelectLoginInfo(db, user, function (result){
         if (result.length == 1) {
-            resultfun(true, result[0]);
+            if (result[0].password == user.password) {
+                if (result[0].state == "online") {
+                    resultfun(false, "用户已登录");
+                } else {
+                    UserDao.SetOnline(db, user, function (resultlen) {
+                        if (resultlen == 1) {
+                            resultfun(true, result[0]);
+                        } else {
+                            resultfun(false, "登录失败,请尝试重新登录");
+                        }
+                    });
+                }
+            } else {
+                resultfun(false, "密码错误");
+            }
         } else {
-            resultfun(false, result[0]);
+            resultfun(false, "用户不存在");
         }
     });
 }
 
+
+function  Logout(user, resultfun) {
+    db.connect();
+    UserDao.SetOffline(db ,user, function (resultlen) {
+        if(resultlen == 1) {
+            resultfun(true);
+        } else {
+            resultfun(false);
+        }
+    });
+}
 function Register(user, resultfun) {
     db.connect();
     UserDao.SelectByName(db, user.name, function (result) {
         if (result.length == 1) {
             resultfun(false, "昵称已存在")
         } else {
-            UserDao.Register(db,user,function(result){
+            UserDao.InsertUserInfo(db,user,function(result){
                 if (result == 1) {
                     resultfun( true,"注册成功");
                 } else {
@@ -30,11 +55,12 @@ function Register(user, resultfun) {
 
 function ShowRank(resultfun) {
     db.connect();
-    UserDao.ShowRank(db,resultfun);
+    UserDao.SelectRank(db,resultfun);
 }
 module.exports = {
     Login,
     Register,
-    ShowRank
+    ShowRank,
+    Logout
 }
 

@@ -1,8 +1,9 @@
 var ws = require('ws');
 var UserSerivce = require('../Service/UserSerivce');
-var server=new ws.Server({
-    host: "192.168.1.5",
-    port: "12003",
+var config = require('../WebSocketconfig');
+var server = new ws.Server({
+    host: config.host,
+    port: config.rank_port
 });
 
 server.on('connection', function (conn) {

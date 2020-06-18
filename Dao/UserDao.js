@@ -1,14 +1,29 @@
-function Login(db, user, resultfun){
-    var sql = "select * from user where (email=? or name=?) and password=?";
-    var Params = [user.email, user.name, user.password];
+function SelectLoginInfo(db, user, resultfun){
+    var sql = "select * from user where (email=? or name=?)";
+    var Params = [user.email, user.name];
     db.executeSelect(sql,Params, function(result){
         resultfun(result);
     });
 }
 
-function Register(db, user, resultfun){
-    var sql = "insert into user values(?,?,?,0)";
-    var Params = [user.email, user.password, user.name, user.point];
+function SetOnline(db, user, resultfun) {
+    var sql = "update user set state='online',loginIP=? where (email=? or name=?)";
+    var Params = [user.loginIP, user.email, user.name];
+    db.executeUpdate(sql, Params, function (result) {
+        resultfun(result);
+    })
+}
+
+function  SetOffline(db, user, resultfun) {
+    var sql = "update user set state='offline' where email=?";
+    var Params = [user.email];
+    db.executeUpdate(sql, Params, function (result) {
+        resultfun(result);
+    })
+}
+function InsertUserInfo(db, user, resultfun){
+    var sql = "insert into user(email,password,name,sex,loginIP,state,point,register_time) values(?,?,?,?,?,'offline',0,now())";
+    var Params = [user.email, user.password, user.name,user.sex,user.loginIP];
     db.executeUpdate(sql, Params, function (result) {
         console.log(result);
         resultfun(result);
@@ -23,7 +38,7 @@ function SelectByName(db, name, resultfun) {
     });
 }
 
-function ShowRank(db, resultfun){
+function SelectRank(db, resultfun){
     var sql = "select name,point from user order by point desc limit 0,100";
     db.executeSelect(sql, [], function(result){
         resultfun(result);
@@ -31,8 +46,10 @@ function ShowRank(db, resultfun){
 }
 
 module.exports = {
-    Login,
-    Register,
+    SelectLoginInfo,
+    InsertUserInfo,
     SelectByName,
-    ShowRank
+    SelectRank,
+    SetOnline,
+    SetOffline
 }

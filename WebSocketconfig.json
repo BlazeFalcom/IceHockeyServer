@@ -1,0 +1,8 @@
+{
+  "host":           "192.168.1.5",
+  "login_port":     "12001",
+  "register_port":  "12002",
+  "rank_port":      "12003",
+  "room_port":      "12004",
+  "game_port":      "12005"
+}
