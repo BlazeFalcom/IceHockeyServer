@@ -1,5 +1,6 @@
 var ws = require('ws');
-var client = new ws('ws://192.168.1.5:12003');
+var config = require('../WebSocketconfig');
+var client = new ws('ws://' + config.host + ':' + config.rank_port);
 client.on('open', function open() {
     client.send("showrank");
 });//在连接创建完成后发送一条信息

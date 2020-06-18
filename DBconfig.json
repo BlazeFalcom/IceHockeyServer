@@ -2,6 +2,6 @@
   "host":     "localhost",
   "user":     "root",
   "password": "lyf1999102",
-  "port"    : "3306",
+  "port"    : "3307",
   "database": "icehockey"
 }
