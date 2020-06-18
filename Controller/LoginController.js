@@ -11,8 +11,10 @@ var server = new ws.Server({
 });
 
 server.on('connection', function (conn) {
-
     conn.state = "offline";
+    conn.send("success#" + JSON.stringify({
+        "username": "luyufeng"
+    }));
     conn.on('message', function (message) {
         /**
          * 打包后网页发送过来的为buffer对象，需要先转化为字符串。
