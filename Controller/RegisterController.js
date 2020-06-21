@@ -53,14 +53,12 @@ server.on('connection', function (conn) {
                 }
             }
         }
-
         var user;
         if(regex.mail.test(userjson.username)){
             user = new UserClass.User(userjson.username, userjson.password, userjson.name, null);
         } else {
             user = new UserClass.User("", userjson.password, userjson.username, null);
         }
-
     });
     //断开连接时调用
     conn.on("close", function() {

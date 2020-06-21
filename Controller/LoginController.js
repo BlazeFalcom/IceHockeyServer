@@ -12,26 +12,17 @@ var server = new ws.Server({
 
 server.on('connection', function (conn) {
     conn.state = "offline";
-    conn.send("success#" + JSON.stringify({
-        "username": "luyufeng"
-    }));
+    console.log("succ");
     conn.on('message', function (message) {
         /**
          * 打包后网页发送过来的为buffer对象，需要先转化为字符串。
          * 然后因为网页发送的属性名和在UE4中测试时不同，比如使用UE4测试时是username，打包后网页发送的是UserName，所以需要全部转换为小写（不是必要，但是有补全比较舒服）
          * 最后再转为JSON对象即可取属性值了
          */
-        console.log(message);
-        var msgs = message.split("#");
-        if (msgs.length > 1) {
-             var type = msgs[0];
-             var msg = msgs[1];
-             switch(type) {
-                 case "login":login(msg);break;
-                 case "logout":logout();break;
-             }
-        }
-
+        msgSplit(message, function(type, msg){
+            //将消息交给消息处理器
+            msghandle(type, msg);
+        });
     });
     //断开连接时调用
     conn.on("close", function() {
@@ -43,9 +34,28 @@ server.on('connection', function (conn) {
     // 发生错误时调用
     conn.on("error", function(err) {
         console.log("客户端连接出错", err);
+        if(conn.state == "online") {
+            logout();
+        }
     });
 
-
+    function msgSplit(message, resultfun){
+        var messages =  message.split('#');
+        if(messages.length == 1) {
+            var type = messages[0];
+            var msg = "";
+        } else {
+            var type = messages[0];
+            var msg = messages[1];
+        }
+        resultfun(type, msg);
+    }
+    function msghandle(type, msg){
+        switch(type) {
+            case "login":login(msg);break;
+            case "logout":logout();break;
+        }
+    }
     function  login(msg) {
         var userjson = JSON.parse(msg.toString('utf-8').toLocaleLowerCase());
         var regex = require('../Util/Regex');
@@ -61,7 +71,8 @@ server.on('connection', function (conn) {
             } else {
                 UserSerivce.Login(user, function(success ,Loginresult) {
                     if (success) {
-                        conn.send("登录成功");
+                        console.log(Loginresult);
+                        conn.send("success#" + JSON.stringify(Loginresult));
                         var loginRecord = new LoginRecordClass.LoginRecord(null, Loginresult.email);
                         LoginRecordSerivce.Login(loginRecord,function(success, result){
                             if(success) {
@@ -74,7 +85,7 @@ server.on('connection', function (conn) {
                             }
                         });
                     } else {
-                        conn.send(Loginresult);
+                        conn.send("fail#" + Loginresult);
                     }
                 });
             }

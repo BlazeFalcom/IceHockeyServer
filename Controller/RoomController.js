@@ -33,14 +33,18 @@ server.on('connection', function (conn) {
         count+= 1;
         conn.id = `${count}`;
         conn.inroom = false;
-        conn.send("欢迎使用");
-        conn.send("id:" + conn.id);
+        conn.send("id#" + conn.id);
     }
     //消息分割
     function msgSplit(message, resultfun){
         var messages =  message.split(':');
-        var type = messages[0];
-        var msg = messages[1];
+        if(messages.length == 1) {
+            var type = messages[0];
+            var msg = "";
+        } else {
+            var type = messages[0];
+            var msg = messages[1];
+        }
         resultfun(type, msg);
     }
     //消息处理器
@@ -66,10 +70,10 @@ server.on('connection', function (conn) {
             conn.send("当前已经在房间了");
         }else{
             roomMap.set(conn.id + "-" +msg, new Set());
-            roomMap.get(conn.id + "-" +msg).add(conn);
-            conn.inroom = true;
-            conn.roomid = conn.id + "-" +msg;
-            conn.ready = false;
+            // roomMap.get(conn.id + "-" +msg).add(conn);
+            // conn.inroom = true;
+            // conn.roomid = conn.id + "-" +msg;
+            // conn.ready = false;
             conn.send("创建成功");
         }
     }
@@ -77,8 +81,16 @@ server.on('connection', function (conn) {
     function showrooms() {
         var roomkeys = roomMap.keys();
         var roomList = Array.from(roomkeys);
-        var jsonstr = JSON.stringify(roomList);
-        conn.send(jsonstr);
+        if (roomList.length != 0) {
+            var str = roomList[0];
+            for (let i=1; i < roomList.length; i++) {
+                str = str +","+roomList[i];
+            }
+            console.log(str);
+            conn.send("rooms#"+str);
+        } else {
+            conn.send("noroom#");
+        }
     }
     //加入房间
     function joinroom(id) {
@@ -94,12 +106,11 @@ server.on('connection', function (conn) {
                 conn.ready = false;
                 room.add(conn)
                 conn.send("加入成功");
-                for (let roomconn of room) {
-                    roomconn.send(conn.username + "加入房间");
-                }
+                sendroomusers();
             }
         } else {
             conn.send("房间不存在");
+            showrooms();
         }
     }
     //退出房间
@@ -111,13 +122,14 @@ server.on('connection', function (conn) {
                     roomMap.delete(conn.roomid);
                 } else {
                     for (let roomconn of room) {
-                        roomconn.send(conn.username + "退出房间");
+                        roomconn.send(sendroomusers());
                     }
                 }
                 conn.inroom = false;
                 conn.roomid = undefined;
                 conn.ready = undefined;
-                conn.send("退出成功");
+                conn.send("exit#room");
+                showrooms();
             }
         } else {
             conn.send("你当前不在房间");
@@ -132,7 +144,7 @@ server.on('connection', function (conn) {
                 var count = 0;
                 for (let roomconn of room) {
                     if (roomconn.ready) count+=1;
-                    roomconn.send(conn.username + "准备好了");
+                    roomconn.send(getroomusers());
                 }
                 if (count == 2) {
                     startgame(room);
@@ -148,8 +160,36 @@ server.on('connection', function (conn) {
         for (let con of connlist) {
             con.send("开始游戏");
         }
-        connlist[0].send("opponent:" + connlist[1].id);
-        connlist[1].send("opponent:" + connlist[0].id);
+        connlist[0].send("opponent#" + connlist[1].id);
+        connlist[1].send("opponent#" + connlist[0].id);
+    }
+
+    function getroomusers() {
+        if (typeof(conn.roomid) != "undefined") {
+            var room = roomMap.get(conn.roomid);
+            var connlist = Array.from(room);
+            var str = JSON.stringify({
+                "username" : connlist[0].username,
+                "state" : connlist[0].ready,
+            });
+            for (let i = 1; i < connlist.length; i++) {
+                str = str + "#" + JSON.stringify({
+                    "username" : connlist[i].username,
+                    "state" : connlist[i].ready,
+                });
+            }
+            return "roomusers#" + str;
+        }
+        return "";
+    }
+
+    function sendroomusers() {
+        if (typeof(conn.roomid) != "undefined") {
+            var room = roomMap.get(conn.roomid);
+            for (let roomconn of room) {
+                roomconn.send(getroomusers());
+            }
+        }
     }
 });
 

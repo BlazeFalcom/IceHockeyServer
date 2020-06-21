@@ -1,5 +1,5 @@
 function SelectLoginInfo(db, user, resultfun){
-    var sql = "select * from user where (email=? or name=?)";
+    var sql = "select email,password,name,sex,state,point from user where (email=? or name=?)";
     var Params = [user.email, user.name];
     db.executeSelect(sql,Params, function(result){
         resultfun(result);
