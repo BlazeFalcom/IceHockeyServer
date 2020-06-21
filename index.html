@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Access-Control-Allow-Origin" content="text/html; charset=utf-8" />
+    <title>Title</title>
+</head>
+<body>
+<button id="btn">获取资源</button>
+<div id="box"></div>
+<script>
+  var oBtn = document.getElementById('btn');
+  var oBox = document.getElementById('box');
+  oBtn.onclick = function () {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', '/getdata', true);
+    xhr.send(null);
+    xhr.onreadystatechange = function () {
+      if(xhr.readyState === 4 && xhr.status === 200){
+        oBox.innerText = xhr.responseText;
+      }
+    }
+  }
+</script>
+</body>
+</html>

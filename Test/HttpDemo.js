@@ -7,7 +7,8 @@ var app = http.createServer(function (req, res) {
     console.log(urlstr);
     var url_obj = url.parse(req.url);
     if(url_obj.pathname === '/'){
-        fs.readFile('./index.html','utf-8', function (err, data) {
+        res.writeHead(200,{"Content-Type":"text/html","Access-Control-Allow-Origin":"*"});
+        fs.readFile('index.html','utf-8', function (err, data) {
             if(!err){
                 res.write(data);
                 res.end();
