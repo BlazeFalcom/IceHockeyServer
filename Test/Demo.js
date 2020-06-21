@@ -47,3 +47,16 @@ var user = new UserClass.User("1222", "23", "24", null);
 // });
 
 
+function b(resultfun) {
+    a(function (str) {
+        resultfun(str);
+    });
+}
+function a(resultfun) {
+    resultfun("123");
+}
+var c = b(function (str) {
+    console.log(str);
+});
+
+

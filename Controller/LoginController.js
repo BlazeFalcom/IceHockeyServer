@@ -9,7 +9,7 @@ var server = new ws.Server({
     host: config.host,
     port: config.login_port
 });
-
+console.log("登录服务器开启");
 server.on('connection', function (conn) {
     conn.state = "offline";
     console.log("succ");

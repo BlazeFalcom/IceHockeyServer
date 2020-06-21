@@ -14,15 +14,6 @@ client.on('message', function incoming(data) {
     console.log(data);
 });
 
-
-
-
-
-
-
-
-
-
 const rl = readline.createInterface({
     input:process.stdin,
     output:process.stdout

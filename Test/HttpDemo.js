@@ -1,10 +1,23 @@
 var http = require('http');
 var url = require('url');
-var util = require('util');
-
-http.createServer(function(req, res){
-    var params = url.parse(req.url, true).query;
-    console.log(params.name);
-    res.write("123");
-    res.end();
-}).listen(3000);
+var fs = require('fs');
+var app = http.createServer(function (req, res) {
+    res.writeHead(200,{"Content-Type":"text/plain","Access-Control-Allow-Origin":"*"});
+    var urlstr = req.url;
+    console.log(urlstr);
+    var url_obj = url.parse(req.url);
+    if(url_obj.pathname === '/'){
+        fs.readFile('./index.html','utf-8', function (err, data) {
+            if(!err){
+                res.write(data);
+                res.end();
+            }
+        })
+    }
+    // 处理ajax请求
+    if(url_obj.pathname === '/getdata'){
+        res.write('hello world');
+        res.end();
+    }
+});
+app.listen(3000);

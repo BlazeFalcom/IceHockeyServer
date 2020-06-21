@@ -4,7 +4,7 @@ var server = new ws.Server({
     host: config.host,
     port: config.game_port
 });
-
+console.log("游戏服务器开启");
 var connMap = new Map();
 server.on('connection', function (conn) {
     conn.send("游戏服务器");
