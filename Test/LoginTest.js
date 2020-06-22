@@ -9,7 +9,7 @@ client.on('open', function open() {
     };
     client.send("login#" + JSON.stringify(userinfo));
 });//在连接创建完成后发送一条信息
-
+client.readyState
 client.on('message', function incoming(data) {
     console.log(data);
 });

@@ -5,14 +5,14 @@ var UserSerivce = require('../Service/UserSerivce');
 var LoginRecordSerivce = require('../Service/LoginRecordSerivce');
 var BanRecordSerivce = require('../Service/BanRecordService');
 var config = require('../WebSocketconfig');
+var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: config.host,
+    host: iputil.getIPAdress(),
     port: config.login_port
 });
-console.log("登录服务器开启");
+console.log("登录服务器开启成功");
 server.on('connection', function (conn) {
     conn.state = "offline";
-    console.log("succ");
     conn.on('message', function (message) {
         /**
          * 打包后网页发送过来的为buffer对象，需要先转化为字符串。
@@ -91,7 +91,7 @@ server.on('connection', function (conn) {
             }
         });
     }
-    
+
     function logout() {
         if (typeof(conn.lid) != "undefined" && typeof(conn.username) != "undefined") {
             var user = new UserClass.User(conn.username);

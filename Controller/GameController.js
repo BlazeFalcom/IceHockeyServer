@@ -1,7 +1,8 @@
 var ws = require('ws');
 var config = require('../WebSocketconfig');
+var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: config.host,
+    host: iputil.getIPAdress(),
     port: config.game_port
 });
 console.log("游戏服务器开启");

@@ -1,11 +1,12 @@
 var ws = require('ws');
 var UserSerivce = require('../Service/UserSerivce');
 var config = require('../WebSocketconfig');
+var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: config.host,
+    host: iputil.getIPAdress(),
     port: config.rank_port
 });
-
+console.log("排名战绩服务器开启");
 server.on('connection', function (conn) {
     conn.on('message', function (message) {
         msgSplit(message, function(type, msg){

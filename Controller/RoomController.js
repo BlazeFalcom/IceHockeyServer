@@ -1,10 +1,11 @@
 var ws = require('ws');
 var config = require('../WebSocketconfig');
+var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: config.host,
+    host: iputil.getIPAdress(),
     port: config.room_port
 });
-
+console.log("房间服务器开启");
 var count = 0;
 var roomMap = new Map();
 server.on('connection', function (conn) {
