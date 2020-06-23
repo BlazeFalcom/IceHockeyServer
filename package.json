@@ -29,11 +29,11 @@
   "bin": "Servers.js",
   "pkg": {
     "scripts": [
-        "Controller/*.js",
-        "Dao/*.js",
-        "Model/*.js",
-        "Service/*.js",
-        "Util/*.js"
+      "Controller/*.js",
+      "Dao/*.js",
+      "Model/*.js",
+      "Service/*.js",
+      "Util/*.js"
     ]
   }
 }

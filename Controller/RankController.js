@@ -9,6 +9,8 @@ var server = new ws.Server({
 console.log("排名战绩服务器开启");
 server.on('connection', function (conn) {
     conn.on('message', function (message) {
+        message = message.toString('utf-8').toLocaleLowerCase();
+        console.log(message);
         msgSplit(message, function(type, msg){
             //将消息交给消息处理器
             msghandle(type, msg);

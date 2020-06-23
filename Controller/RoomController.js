@@ -15,6 +15,8 @@ server.on('connection', function (conn) {
     //接收到消息是调用
     conn.on('message', function (message) {
         //将消息拆分，得到消息类型以及消息内容
+        message = message.toString('utf-8').toLocaleLowerCase();
+        console.log(message);
         msgSplit(message, function(type, msg){
            //将消息交给消息处理器
            msghandle(type, msg);
@@ -71,11 +73,12 @@ server.on('connection', function (conn) {
             conn.send("当前已经在房间了");
         }else{
             roomMap.set(conn.id + "-" +msg, new Set());
-            // roomMap.get(conn.id + "-" +msg).add(conn);
-            // conn.inroom = true;
-            // conn.roomid = conn.id + "-" +msg;
-            // conn.ready = false;
+            roomMap.get(conn.id + "-" +msg).add(conn);
+            conn.inroom = true;
+            conn.roomid = conn.id + "-" +msg;
+            conn.ready = false;
             conn.send("创建成功");
+            sendroomusers();
         }
     }
     //查看所有房间
@@ -118,21 +121,21 @@ server.on('connection', function (conn) {
     function exitroom() {
         if (conn.inroom) {
             var room = roomMap.get(conn.roomid);
-            if(room.delete(conn)){
-                if (room.size == 0) {
-                    roomMap.delete(conn.roomid);
-                } else {
-                    for (let roomconn of room) {
-                        roomconn.send(sendroomusers());
-                    }
-                }
+            conn.send("exit#room");
+            room.delete(conn);
+            if (room.size == 0) {
+                roomMap.delete(conn.roomid);
                 conn.inroom = false;
                 conn.roomid = undefined;
                 conn.ready = undefined;
-                conn.send("exit#room");
-                showrooms();
+            } else {
+                sendroomusers();
+                conn.inroom = false;
+                conn.roomid = undefined;
+                conn.ready = undefined;
             }
         } else {
+            console.log("当前不在房间");
             conn.send("你当前不在房间");
         }
     }

@@ -19,6 +19,8 @@ server.on('connection', function (conn) {
          * 然后因为网页发送的属性名和在UE4中测试时不同，比如使用UE4测试时是username，打包后网页发送的是UserName，所以需要全部转换为小写（不是必要，但是有补全比较舒服）
          * 最后再转为JSON对象即可取属性值了
          */
+        message = message.toString('utf-8').toLocaleLowerCase();
+        console.log(message);
         msgSplit(message, function(type, msg){
             //将消息交给消息处理器
             msghandle(type, msg);
@@ -40,6 +42,7 @@ server.on('connection', function (conn) {
     });
 
     function msgSplit(message, resultfun){
+        console.log(message);
         var messages =  message.split('#');
         if(messages.length == 1) {
             var type = messages[0];

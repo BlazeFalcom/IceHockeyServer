@@ -10,6 +10,8 @@ var connMap = new Map();
 server.on('connection', function (conn) {
     conn.send("游戏服务器");
     conn.on('message', function (message) {
+        message = message.toString('utf-8').toLocaleLowerCase();
+        console.log(message);
         //将消息拆分，得到消息类型以及消息内容
         msgSplit(message, function(type, msg){
             //将消息交给消息处理器
