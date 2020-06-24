@@ -161,8 +161,9 @@ server.on('connection', function (conn) {
     //开始游戏
     function startgame(room) {
         var connlist = Array.from(room);
-        for (let con of connlist) {
-            con.send("开始游戏");
+        for (let i=0; i < connlist.length; i++) {
+            connlist[i].send("开始游戏");
+            connlist[i].send("playerid#" + i);
         }
         connlist[0].send("opponent#" + connlist[1].id);
         connlist[1].send("opponent#" + connlist[0].id);

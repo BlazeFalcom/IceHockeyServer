@@ -35,6 +35,7 @@ server.on('connection', function (conn) {
             case "username":setusername(msg);break;
             case "opponent":setopponent(msg);break;
             case "msg":sendmsg(msg);break;
+            case "location":sendlocation(msg);break;
         }
     }
 
@@ -48,10 +49,19 @@ server.on('connection', function (conn) {
     }
     function setopponent(oppid) {
         conn.oppid = oppid;
+        if (connMap.has(conn.oppid)) {
+            var oppconn = connMap.get(conn.oppid);
+            oppconn.send("start:game");
+            conn.send();
+        }
     }
     function sendmsg(msg) {
         var oppconn = connMap.get(conn.oppid);
         oppconn.send(msg);
+    }
+    function sendlocation(location) {
+        var oppconn = connMap.get(conn.oppid);
+            oppconn.send("location:" + location);
     }
 
 });

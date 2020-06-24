@@ -1,5 +1,7 @@
 var ws = require('ws');
 var UserSerivce = require('../Service/UserSerivce');
+var User = require('../Model/User');
+var GameRecordService = require('../Service/GameRecordService');
 var config = require('../WebSocketconfig');
 var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
@@ -36,15 +38,30 @@ server.on('connection', function (conn) {
     }
     function showrank() {
         UserSerivce.ShowRank(function (result) {
-            var str = JSON.stringify(result[0]);
-            for (let i = 1; i < result.length; i++) {
-                str = str +"#"+JSON.stringify(result[i]);
+            if (result.length > 0) {
+                var str = JSON.stringify(result[0]);
+                for (let i = 1; i < result.length; i++) {
+                    str = str +"#"+JSON.stringify(result[i]);
+                }
+                conn.send(str);
+            } else {
+                conn.send("");
             }
-            conn.send(str);
         });
     }
 
     function showgame_record(email) {
-
+        GameRecordService.showGameRecord(new User.User(email), function (result) {
+            if (result.length > 0) {
+                var str = JSON.stringify(result[0]);
+                for (let i = 1; i < result.length; i++) {
+                    str = str + "#" + JSON.stringify(result[i]);
+                }
+                conn.send(str);
+            } else {
+                conn.send("");
+            }
+        })
     }
+
 });

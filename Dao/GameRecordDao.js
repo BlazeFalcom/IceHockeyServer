@@ -13,10 +13,10 @@ function SelectAll(db, resultfun){
     })
 }
 
-function SelectByUser(db, user) {
-    var sql = "select * from game_record where my_email=?";
+function SelectByUser(db, user, resultfun) {
+    var sql = "SELECT u.name as myname, a. name as rivalname, g.my_score as myscore, g.rival_score as rival_score, g.time from user as u INNER JOIN user as a INNER JOIN game_record as g on u.email = g.my_email and g.rival_email = a.email where g.my_email=?";
     var Params = [user.email];
-    db.executeSelect(sql, [], function(result){
+    db.executeSelect(sql, Params, function(result){
         resultfun(result);
     });
 }
