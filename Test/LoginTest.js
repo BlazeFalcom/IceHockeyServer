@@ -1,7 +1,7 @@
 var ws = require('ws');
 var readline = require('readline');
 var config = require('../WebSocketconfig');
-var client = new ws('ws://' + config.host + ':' + config.login_port);
+var client = new ws('ws://localhost:12001');
 client.on('open', function open() {
     var userinfo = {
         "username" : "芦雨锋",

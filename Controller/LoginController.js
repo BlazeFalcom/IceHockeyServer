@@ -7,7 +7,7 @@ var BanRecordSerivce = require('../Service/BanRecordService');
 var config = require('../WebSocketconfig');
 var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: iputil.getIPAdress(),
+    host: config.host,
     port: config.login_port
 });
 console.log("登录服务器开启成功");

@@ -8,7 +8,7 @@ var MailUtil = require('../Util/MailUtil');
 var config = require('../WebSocketconfig');
 var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: iputil.getIPAdress(),
+    host: config.host,
     port: config.register_port
 });
 console.log("注册服务器开启");

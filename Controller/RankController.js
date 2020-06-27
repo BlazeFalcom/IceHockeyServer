@@ -5,7 +5,7 @@ var GameRecordService = require('../Service/GameRecordService');
 var config = require('../WebSocketconfig');
 var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: iputil.getIPAdress(),
+    host: config.host,
     port: config.rank_port
 });
 console.log("排名战绩服务器开启");
@@ -43,9 +43,9 @@ server.on('connection', function (conn) {
                 for (let i = 1; i < result.length; i++) {
                     str = str +"#"+JSON.stringify(result[i]);
                 }
-                conn.send(str);
+                conn.send("rank$" + str);
             } else {
-                conn.send("");
+                conn.send("rank$");
             }
         });
     }
@@ -57,9 +57,9 @@ server.on('connection', function (conn) {
                 for (let i = 1; i < result.length; i++) {
                     str = str + "#" + JSON.stringify(result[i]);
                 }
-                conn.send(str);
+                conn.send("gamerecord$"+str);
             } else {
-                conn.send("");
+                conn.send("gamerecord$");
             }
         })
     }

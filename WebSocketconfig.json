@@ -1,5 +1,5 @@
 {
-  "host":           "192.168.1.6",
+  "host":           "127.0.0.1",
   "login_port":     "12001",
   "register_port":  "12002",
   "rank_port":      "12003",

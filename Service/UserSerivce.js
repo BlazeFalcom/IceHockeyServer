@@ -53,6 +53,17 @@ function Register(user, resultfun) {
     })
 }
 
+function  AddPoint(user, resultfun) {
+    db.connect();
+    UserDao.Addpoint(db, user, function (length) {
+        if (length > 0) {
+            resultfun(true);
+        } else {
+            resultfun(false);
+        }
+    })
+}
+
 function ShowRank(resultfun) {
     db.connect();
     UserDao.SelectRank(db,resultfun);
@@ -61,6 +72,7 @@ module.exports = {
     Login,
     Register,
     ShowRank,
-    Logout
+    Logout,
+    AddPoint
 }
 

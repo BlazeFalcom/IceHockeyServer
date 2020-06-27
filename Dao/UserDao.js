@@ -6,6 +6,14 @@ function SelectLoginInfo(db, user, resultfun){
     });
 }
 
+function Addpoint(db, user, resultfun) {
+    var sql = "update user set point=? where email=?";
+    var Params = [user.point, user.email];
+    db.executeUpdate(sql, Params, function (result) {
+        resultfun(result);
+    })
+}
+
 function SetOnline(db, user, resultfun) {
     var sql = "update user set state='online',loginIP=? where (email=? or name=?)";
     var Params = [user.loginIP, user.email, user.name];
@@ -51,5 +59,6 @@ module.exports = {
     SelectByName,
     SelectRank,
     SetOnline,
-    SetOffline
+    SetOffline,
+    Addpoint
 }

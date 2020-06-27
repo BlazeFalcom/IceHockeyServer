@@ -2,7 +2,7 @@ var ws = require('ws');
 var config = require('../WebSocketconfig');
 var iputil = require('../Util/GetIPUtil');
 var server = new ws.Server({
-    host: iputil.getIPAdress(),
+    host: config.host,
     port: config.room_port
 });
 console.log("房间服务器开启");
@@ -151,7 +151,7 @@ server.on('connection', function (conn) {
                     roomconn.send(getroomusers());
                 }
                 if (count == 2) {
-                    startgame(room);
+                    startgame(room, conn.roomid);
                 }
             }
         } else {
@@ -159,10 +159,9 @@ server.on('connection', function (conn) {
         }
     }
     //开始游戏
-    function startgame(room) {
+    function startgame(room, id) {
         var connlist = Array.from(room);
         for (let i=0; i < connlist.length; i++) {
-            connlist[i].send("开始游戏");
             connlist[i].send("playerid#" + i);
         }
         connlist[0].send("opponent#" + connlist[1].id);
